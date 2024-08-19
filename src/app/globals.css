@@ -1,33 +1,607 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: 'DarkForest';
+  src: url('/dark_forest/darkforest.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+body.futurefilms {
+  font-family: 'DarkForest', sans-serif; /* Zet het standaard lettertype */
+  display: flex;
+  flex-direction: column; /* Elementen verticaal stapelen */
+  align-items: center; /* Centreren over de horizontale as */
+  justify-content: center; /* Centreren over de verticale as */
+  height: 100%;
+  background-image: url('/achtergrond_FutureFilms_selectionpage.png'); /* Achtergrond instellen */
+  background-size: cover;
+  min-height: 100vh;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Houdt het laadscherm boven alle andere inhoud */
+}
+
+.loader {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: min(50px, 10vw); /* Minimaal 50px of 10% van de viewport breedte */
+  height: min(50px, 10vw); /* Minimaal 50px of 10% van de viewport hoogte */
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+header, footer {
+  width: 100vw; /* Volledige breedte van de viewport */
+  color: white; /* Witte tekst */
+  text-align: center; /* Tekst centreren */
+  background-color: #152036; /* Donkerblauwe achtergrond */
+  padding: 1vh 0; /* Padding relatief aan de hoogte van de viewport */
+}
+
+header {
+  position: fixed;
+  height: max(25px, 4vh); /* Minimaal 50px of 5% van de viewport breedte */
+  top: 0; /* Aan de bovenkant van de viewport */
+  left: 0;
+}
+
+footer {
+  position: fixed;
+  bottom: 0; /* Aan de onderkant van de viewport */
+  left: 0;
+  display: flex; /* Zet de footer om naar een flex container */
+  justify-content: center; /* Centreert de inhoud horizontaal */
+  align-items: center; /* Centreert de inhoud verticaal */
+  width: 100vw;
+  height: max(50px, 9vh); /* Minimaal 50px of 5% van de viewport breedte */
+  text-align: center;
+  background-color: #152036;
+  padding: 3vh 0;
+}
+  
+
+
+.icon img {
+  width: 100%; /* Zorgt ervoor dat de afbeelding zich aanpast aan de container */
+  height: auto; /* Behoudt de aspect ratio van de afbeelding */
+  max-width: max(20px, 3vw); /* Maximale breedte */
+  min-width:max(20px, 3vw); /* Minimale breedte */
+  margin: 0 18px; /* Horizontale marge tussen iconen */
+}
+
+
+
+
+h1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 3vh; /* Plaats h1 nabij de top van de viewport */
+  font-size: max(25px, 2.5vw); /* Dynamische tekstgrootte op basis van viewport-breedte */
+  color: #152036
+}
+
+
+.center-container {
+  position: absolute;
+  top: 47%; /* Centreren ten opzichte van de totale hoogte van de viewport */
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centreren zowel horizontaal als verticaal */
+  width: max(400px,33vw); /* Aanpasbare breedte gebaseerd op design voorkeur */
+  min-height: 40vh; 
+  text-align: center; /* Verzekert dat alle tekst gecentreerd is */
+  display: flex;
+  flex-direction: column; /* Stapelt de items verticaal */
+  align-items: center; /* Zorgt dat alle items in het midden gecentreerd zijn */
+}
+
+
+
+h2 {
+  font-size: max(15px, 1.5vw);
+  color: #152036;
+  font-weight: bold;
+}
+
+h2 .subtitle {
+  display: block;
+  font-size: 1.2vw; /* Kleiner dan de hoofdtekst */
+  color: #465267;
+}
+
+#themesForm {
+  padding: 10px;
+  margin-top: 2vh; /* Ruimte tussen h3 en de form */
+  border: 6px solid #152036; /* Stevige, zichtbare grens */
+  border-radius: 5px;
+  width: 90%;
+  position: relative;
+  font-size: max(20px, 1.2vw); /* Boven */
+}
+
+#themesForm::before, #themesForm::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: -1;
+}
+
+#themesForm::before {
+  left: 0;
+  width: 50%;
+  background-color: #3A5078; /* Een solide, donkerblauwe kleur die goed past bij de blauwe balken */
+  
+}
+
+#themesForm::after {
+  left: 50%;
+  width: 50%;
+  background-color: #F4F4F8; /* Een zachte off-white kleur die goed aansluit bij de witte balken */
+}
+
+
+.theme-row {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Zorgt dat de rij de volledige breedte van de form gebruikt */
+  justify-content: space-between; /* Centreren over de verticale as */
+  margin-bottom: 8px;
+  margin-top: 8px;
+  padding-bottom: 10px;
+  padding-top:5px;
+  padding-left: 4px;
+  color:   #2B305F;
+  font-size: max(20px, 1.2vw); /* Boven */
+  background: linear-gradient(to right, #2B305F 50%,  #e8e8e8 50%);
+  border: white 1px solid;
+}
+
+
+.theme-row:first-of-type {
+  border: 5px solid white; /* Pas de kleur en dikte aan zoals gewenst */
+  background: linear-gradient(to right, #33415C 50%, #f0f0f0 50%); /* Pas de achtergrondkleur aan */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Voeg schaduw toe */
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.theme-row .themes-label {
+  font-size: max(20px, 1.2vw); /* Boven */
+}
+
+.theme-row .level-toggles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px; /* Pas deze waarde aan om de afstand tussen de level toggles te vergroten */
+}
+
+
+.theme-row input.level-toggle {
+  position: relative; /* Zorg ervoor dat de pseudo-elementen relatief zijn aan de checkbox zelf */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: max(20px, 1.4vw);
+  height: max(20px, 1.4vw);
+  background-color: #304878c7;
+  border: 3px solid white;
+  border-radius: 2px;
+  cursor: pointer;
+  margin: auto;
+}
+
+input.level-toggle:hover {
+  background-color: #465267;
+  border-color: #304878;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input.level-toggle:checked:hover {
+  background-color: white;
+  background-image: linear-gradient(to top, #ffffff, #f0f0f0);
+  border-color: #465267;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+input.level-toggle:checked::after {
+  content: "\1F4A7"; /* Unicode voor druppel */
+  color: #152036;
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  font-size: max(10px, 0.9vw);
+}
+
+
+.theme-row label:first-child{
+ color:#F7FFF6;
+ 
+}
+
+.theme-row label:first-of-type {
+  flex-grow: 1; /* Laat het label de beschikbare ruimte opvullen */
+  text-align: left; /* Verzekert dat de labeltekst links uitgelijnd is */
+  font-size: max(15px, 1.2vw); /* Boven */
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;  /* Chrome, Safari, Opera */
+  -moz-appearance: none;     /* Firefox */
+  appearance: none;          /* Standaard specificatie */
+  font-family: 'DarkForest', sans-serif; 
+  width:  max(20px, 1.2vw); /* Minschaal 15px, meeschaalt met 2% van de viewport width, maxschaal 30px */
+  height: max(20px, 1.2vw); /* Dezelfde instellingen voor de hoogte */
+  background-color:  #304878c7;
+  border: 3px solid ;
+  border-color:  white;
+  border-radius: 2px;
+  cursor: pointer; /* Hand cursor op hover */  
+}
+
+.theme-row label {
+  margin-right: clamp(20px, 1.1vw, 30px); /* Ruimte tussen checkboxes */
+  margin-left: clamp(3px, 0.2vw, 7px);
+  white-space: nowrap; /* Voorkomt afbreken van tekst */
+  position: relative;
+  display: inline-block; /* Zorgt ervoor dat de label zich gedraagt als een inline element met block eigenschappen */
+  font-size: max(15px, 1.2vw); /* Boven */
+  justify-content: center; /* Centreren over de verticale as */
+}
+
+
+.theme-row .enabled-checkbox:hover {
+  background-color: #465267; /* Iets lichter dan voorheen om subtiele feedback te geven */
+  cursor: pointer; /* Verduidelijkt dat het een interactief element is */
+  border-color: #304878; /* Een iets levendigere kleur voor de border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25); /* Voegt een subtiele schaduw toe voor diepte */
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Zorgt voor een soepele overgang van stijlen */
+}
+
+
+.theme-row .enabled-checkbox:active {
+  transform: scale(1.4); /* Maakt de checkbox iets kleiner tijdens het klikken */
+  background-color: #b0c4de; /* Nog donkerder tint voor directe feedback */
+}
+
+.theme-row .enabled-checkbox:checked {
+  background-color: white; /* Donkerdere tint voor feedback */
+  transform: scale(1); /* Behoud standaard grootte */
+  border-color: #304878; /* Optioneel: pas de borderkleur aan voor betere zichtbaarheid */
+}
+
+.theme-row .enabled-checkbox:checked:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25); /* Voegt een subtiele schaduw toe voor diepte */
+  background-image: linear-gradient(to top, #ffffff, #f0f0f0); /* Subtiele gradient van wit naar lichtgrijs */
+  border-color: #465267; /* Een iets donkerdere of levendigere tint */
+}
+
+.theme-row .enabled-checkbox:checked::after {
+  content: "\1F4A7"; /* Unicode voor blad */
+  color:#152036; /* Passende kleur */
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  font-size: max(10px,0.9vw);
+}
+
+
+input[type="checkbox"]:disabled {
+  opacity: 0.6; /* Maakt de checkbox half doorzichtig */
+  background-color: #b3d1ff; /* Licht zachtblauw */
+  cursor: default;
+}
+
+input[type="checkbox"]:disabled + label {
+  cursor: default; /* Gebruikt de standaard cursor */
+}
+
+.disabled-checkbox + label:after {
+  content: " \2716";
+  color: #152036;
+  margin-left: 1px;
+  font-size: smaller;
+}
+
+.startknop img {
+  position: absolute;
+  top: 91%; /* Verticale centrering */
+  left: 50%; /* Horizontale centrering */
+  transform: translate(-50%, -50%); /* Correcte centrering */
+  z-index: -1; /* Zet achtergrondniveau */
+  width: max(100px, 6vw); /* Schaal de breedte met de viewport */
+  height: auto; /* Behoud aspect ratio */
+  min-width: 30px; /* Minimale breedte */
+  max-width: 200px; /* Maximale breedte */
+  min-height: 30px; /* Minimale hoogte */
+  max-height: 200px; /* Maximale hoogte */
+}
+
+
+button#StartQuizknop {
+  font-family: 'DarkForest', sans-serif;
+  font-size: max(15px, 1.6vw);
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #152036c0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  top: 106%;  /* Verplaats de knop naar 50% van de hoogte van de rode knop */
+  left: 50%; /* Horizontaal centreren */
+  transform: translate(-50%, -50%); /* Exacte centrering */
+  transition: background-size 0.5s ease-out, padding 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  background-size: 0% 100%;
+}
+
+
+button#StartQuizknop:not(.customButton):hover {
+  color: white;
+  background-image: linear-gradient(to right, #152036c0 0%, #304878 100%);
+  background-size: 100% 100%;
+  padding: 15px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+
+
+button#Downloadknop {
+  font-family: 'DarkForest', sans-serif;
+  font-size: max(15px, 1.5vw);
+  padding: 10px 20px; /* Normale padding */
+  background-color: transparent; /* Geen achtergrondkleur bij standaard */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  color: #152036; /* Lichtere tekstkleur, die bij hover wit wordt */
+  border: 0.1vw solid white;
+  border-radius: 5px;
+  border-color: white;
+  cursor: pointer;
+  position: absolute;
+  top: 75%; /* Verticale centrering */
+  left: 21%; /* Horizontale centrering */
+  transform: translate(-50%, -50%); /* Zorgt voor nauwkeurige centrering */
+  transition: background-size 0.5s ease-out, padding 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  background-size: 0% 100%; /* Begint zonder zichtbare achtergrond */
+  
+}
+
+button#Downloadknop:not(.customButton):hover {
+  color: white;
+  background-image: linear-gradient(to right, #152036c0 0%, #304878 100%);
+  background-size: 120% 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  border: none;
+}
+
+
+.warning-message {
+  position: absolute;
+  bottom: 16vh; /* Plaats de melding 20px boven de onderkant van de viewport */
+  left: 50%; /* Centreert horizontaal */
+  transform: translateX(-50%); /* Nauwkeurige horizontale centrering */
+  width: 33%; /* Aanpasbaar op basis van designvereisten */
+  font-size: 1.2vw;
+  padding: 10px;
+  background-color: #304878;
+  color: white;
+  text-align: center;
+  border: 1px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 1001; /* Zorg ervoor dat de melding boven andere elementen wordt weergegeven */
+}
+
+.hover-message {
+  position: fixed;
+  background-color: #304878;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #152036;
+  display: none;
+  z-index: 2000; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  font-size: max(10px, 1vw);
+}
+
+
+body.videoPlayer {
+  font-family: 'DarkForest', sans-serif; /* Zet het standaard lettertype */
+  display: flex;
+  flex-direction: column; /* Elementen verticaal stapelen */
+  align-items: center; /* Centreren over de horizontale as */
+  justify-content: center; /* Centreren over de verticale as */
+  height: 100%;
+  background-image: url('/achtergrond_videoplayer_1.png'); /* Achtergrond instellen */
+  background-size: cover;
+  min-height: 100vh;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+#videoPlayerContainer {
+  position: fixed; /* Zorgt dat de positie altijd vast is in de viewport */
+  top: 45%; /* Start aan de helft van de viewport hoogte */
+  left: 60%; /* Start aan de helft van de viewport breedte */
+  transform: translate(-50%, -50%); /* Schuift de container terug met de helft van zijn eigen grootte */
+  width: 80vw; /* Neemt 80% van de viewport breedte in */
+  min-height: 100vh; /* Minimale hoogte is 100% van de viewport hoogte */
+  text-align: center; /* Centreert tekst binnen de container */
+  display: flex;
+  flex-direction: column; /* Items worden verticaal gestapeld */
+  align-items: center; /* Centreert items horizontaal binnen de container */
+  overflow: hidden; /* Voorkomt scrollbars als de inhoud groter is dan de container */
+}
+
+video {
+  width: 100%; /* Neemt de volledige breedte van de container in */
+  max-width: 1080px; /* Maximale breedte is 1080px */
+  position: absolute; /* Absoluut gepositioneerd binnen de container */
+  top: 50%; /* Start op 50% van de top van de container */
+  left: 50%; /* Start op 50% van de linkerzijde van de container */
+  transform: translate(-50%, -50%); /* Centreert de video exact in het midden van de container */
+  height: auto; /* Behoudt de aspect ratio van de video */
+  border-radius: 10px;
+  border: 1px solid;
+  border-color: white;
+}
+
+.buttonContainer {
+  position: absolute;
+  bottom: 0.9vh;
+  left: 3.7vw; /* Voorkomt dat de knoppen te dicht bij de rand staan */
+  display: flex;
+  flex-direction: row; /* Zorgt ervoor dat de knoppen horizontaal worden uitgelijnd */
+  gap: 20px; /* Ruimte tussen de knoppen */
+  box-sizing: border-box;
+  margin: auto;
+}
+
+
+#Terugknop, #shuffleknop {
+  padding: 8px 15px;
+  font-family: 'DarkForest', sans-serif;
+  background-color: rgba(255, 255, 255, 0.068); 
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: static;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, background-position 0.3s ease; /* Voeg background-position toe aan de transition */
+  background-size: 200% 100%; /* Verdubbel de achtergrond breedte */
+  background-position: right bottom; /* Begin met de achtergrond gecentreerd naar rechts */
+  font-size: max(12px, 1.3vw);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3)
+}
+
+
+
+
+#Terugknop:hover, #shuffleknop:hover {
+  background-color: #550000; /* Diep donkerrood */
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  background-position: left bottom; /* Verschuif de achtergrond naar links om de "uitvouw" illusie te creëren */
+}
+
+.customContainer {
+  position: absolute;
+  font-family: 'DarkForest', sans-serif;
+  top: 45vh;
+  left: 10vh;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontaal centreren */
+  justify-content: center; /* Verticaal centreren */
+  background-color: rgba(24, 36, 60, 0.911); /* Semi-transparante achtergrond met 50% transparantie */
+  padding: clamp(0px, 0.05vh, 1px) 0px; /* Verticale padding die schaalt met de viewport hoogte */
+  border-radius: 5px;
+  box-shadow:  0 clamp(2px, 1vw, 4px) clamp(4px, 2vw, 8px) rgba(0, 0, 0, 0.2); /* Responsieve box-shadow */ /*0 4px 8px rgba(0, 0, 0, 0.2);*/
+  width: 15vw; /* Breedte van de container */
+  box-sizing: border-box;
+  border: clamp(2px, 0.25vw, 6px) solid #fff; /* Maakt de rand dikker en wit */
+  margin-right: 20px;
+}
+
+.ButtomBar {
+  display: flex;
+  font-family: 'DarkForest', sans-serif;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%; /* Verzekert volledige breedte */
+  background-color: none;
+  padding:   
+      clamp(10px, 1vw, 60px) /* Boven */
+      clamp(15px, 2vw, 60px) /* Rechts */
+      clamp(5px, 1vw, 60px)  /* Onder */
+      clamp(15px, 2vw, 60px); /* Links */
+
+  font-size: 1.2vw;
+  box-sizing:border-box; /* Inclusief padding en border in de breedteberekening */
+  position: relative; /* Positionering relatief voor ::before gebruik */
+}
+
+.titleBar {
+  display: flex;
+  font-family: 'DarkForest', sans-serif;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Verzekert volledige breedte */
+  background-color: #e4f0ffa0; /* Semi-transparante donkergrijze/zwarte kleur */
+  color: #18243C;
+  padding: clamp(10px, 1vh, 30px);
+  font-size: 1.4vw;
+  box-sizing:border-box; /* Inclusief padding en border in de breedteberekening */
+  position: relative; /* Positionering relatief voor ::before gebruik */
+}
+
+
+.customButton:first-child {
+  margin-top: 0;
+}
+
+.customButton:last-child {
+  margin-bottom: 0;
+}
+
+.customButton {
+  padding: 10px 10px;
+  font-family: 'DarkForest', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+  color: #18243C;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  transition: background-color 0.5s ease, box-shadow 0.5s ease, background-image 0.5s ease; /* Geen transition op size of position */
+  background-image: linear-gradient(to right, #ffffff 0%, #f0f0f0 100%);
+  background-size: 100% 100%; /* Begint zonder zichtbare achtergrond */
+  margin-top: clamp(10px, 1.1vw, 15px); /* Minimaal 10px, schaalt met de viewport tot maximaal 20px */
+  margin-bottom: clamp(10px, 1.1vw, 15px); /* Minimaal 10px, schaalt met de viewport tot maximaal 20px */
+  position: relative;
+  background-position: center; /* Zorgt ervoor dat de gradiënt vanuit het midden start */
+  font-size: max(10px, 1.2vw);
+}
+
+.customButton:hover {
+  background-image: radial-gradient(circle at center, #ffffff 0%, #8aa8d8 50%, #152036c0 100%);
+  color: #18243C;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  background-size: 200% 200%; /* Past de grootte aan zodat de blauwe kleur uiteindelijk de gehele knop bedekt */
 }
